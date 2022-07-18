@@ -16,38 +16,33 @@ def welcome(message):
     format(message.from_user, bot.get_me()),parse_mode='html'
     )
 
-@bot.message_handler(commands=['menu'])
-def menu(message):
-    markup_inline = types.InlineKeyboardMarkup()
+    markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
     item_weather = types.InlineKeyboardButton(text = 'Погода', callback_data = 'weather')
     item_about = types.InlineKeyboardButton(text = 'О пользователе', callback_data = 'about')
     item_guide = types.InlineKeyboardButton(text = 'Справочник', callback_data = 'guide')
 
-    markup_inline.add(item_about, item_guide, item_weather)
-    bot.send_message(message.chat.id, 
-    'Меню',
-    reply_markup = markup_inline
+    markup_reply.add(item_guide, item_weather, item_about)
+    bot.send_message(message.chat.id, 'Выберите необходимый пункт:',
+    reply_markup = markup_reply 
     )
 
-@bot.callback_query_handler(func = lambda call: True)
-def answer(call):
-    if call.data == 'weather':
-        bot.send_message(call.message.chat.id,
-        'test')
-
-    elif call.data == 'about':
+@bot.message_handler(content_types = ['text'])
+def get_choose(message):
+    if message.text == 'Погода':
+        bot.send_message(message.chat.id,
+        f'функция в разработке')
+    elif message.text == 'О пользователе':
+        bot.register_next_step_handler(message, get_about)
         markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
         item_id = types.KeyboardButton('Мой ID')
         item_username = types.KeyboardButton('Мой ник')
         markup_reply.add(item_id, item_username)
-        bot.send_message(call.message.chat.id, 'Выберите необходимый пункт.',
-        reply_markup= markup_reply
+        bot.send_message(message.chat.id, 'Что именно Вас интересует?',
+        reply_markup = markup_reply
         )
-
-    elif call.data == 'guide':
-        bot.send_message(call.message.chat.id,
-        'test')
-
+    elif message.text == 'Справочник':
+        bot.send_message(message.chat.id,
+        f'функция в разработке')
 
 @bot.message_handler(content_types = ['text'])
 def get_about(message):
@@ -57,5 +52,24 @@ def get_about(message):
     elif message.text == 'Мой ник':
         bot.send_message(message.chat.id,
         f'Ваш ник: {message.from_user.first_name} {message.from_user.last_name}')
+
+#@bot.callback_query_handler(func = lambda call: True)
+#def answer(call):
+ #   if call.data == 'weather':
+  #      bot.send_message(call.message.chat.id,
+   #     'test')
+#
+ #   elif call.data == 'about':
+  #      markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
+   #     item_id = types.KeyboardButton('Мой ID')
+    #    item_username = types.KeyboardButton('Мой ник')
+     #   markup_reply.add(item_id, item_username)
+      #  bot.send_message(call.message.chat.id, 'Выберите необходимый пункт.',
+       # reply_markup = markup_reply
+        #)
+
+   # elif call.data == 'guide':
+    #    bot.send_message(call.message.chat.id,
+     #   'test')
 
 bot.polling(none_stop = True, interval = 0) 
