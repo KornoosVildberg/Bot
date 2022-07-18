@@ -53,23 +53,4 @@ def get_about(message):
         bot.send_message(message.chat.id,
         f'Ваш ник: {message.from_user.first_name} {message.from_user.last_name}')
 
-#@bot.callback_query_handler(func = lambda call: True)
-#def answer(call):
- #   if call.data == 'weather':
-  #      bot.send_message(call.message.chat.id,
-   #     'test')
-#
- #   elif call.data == 'about':
-  #      markup_reply = types.ReplyKeyboardMarkup(resize_keyboard = True)
-   #     item_id = types.KeyboardButton('Мой ID')
-    #    item_username = types.KeyboardButton('Мой ник')
-     #   markup_reply.add(item_id, item_username)
-      #  bot.send_message(call.message.chat.id, 'Выберите необходимый пункт.',
-       # reply_markup = markup_reply
-        #)
-
-   # elif call.data == 'guide':
-    #    bot.send_message(call.message.chat.id,
-     #   'test')
-
 bot.polling(none_stop = True, interval = 0) 
